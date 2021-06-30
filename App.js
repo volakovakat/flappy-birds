@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Dimensions, StyleSheet, View, YellowBox } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import Bird from './components/Bird';
 import Obstacles from './components/Obstacles';
 
@@ -10,6 +10,8 @@ export default function App() {
   const [birdBottom, setBirdBottom] = useState(screenHeight / 2);
   const [obstaclesLeft, setObstaclesLeft] = useState(screenWidth);
   const [obstaclesLeftTwo, setObstaclesLeftTwo] = useState(screenWidth + screenWidth / 2 + 30);
+  const [obstaclesNegHeight, setObstaclesNegHeight] = useState(0)
+  const [obstaclesNegHeightTwo, setObstaclesNegHeightTwo] = useState(0)
   const obstaclesWidth = 60;
   const obstaclesHeight = 300;
   const gap = 200;
@@ -43,6 +45,7 @@ export default function App() {
       }
     } else {
       setObstaclesLeft(screenWidth)
+      setObstaclesNegHeight( - Math.random() * 100)
     }
   }, [obstaclesLeft])
 
@@ -57,6 +60,7 @@ useEffect(() => {
     }
   } else {
     setObstaclesLeftTwo(screenWidth)
+    setObstaclesNegHeightTwo( - Math.random() * 100)
   }
 }, [obstaclesLeftTwo])
 
@@ -73,6 +77,7 @@ useEffect(() => {
       color={'green'}
       obstaclesWidth={obstaclesWidth}
       obstaclesHeight={obstaclesHeight}
+      randomBottom={obstaclesNegHeight}
       gap={gap}
       obstaclesLeft={obstaclesLeft}
       />
@@ -80,6 +85,7 @@ useEffect(() => {
       color={'yellow'}
       obstaclesWidth={obstaclesWidth}
       obstaclesHeight={obstaclesHeight}
+      randomBottom={obstaclesNegHeightTwo}
       gap={gap}
       obstaclesLeft={obstaclesLeftTwo}
       />
