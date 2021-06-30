@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, View, YellowBox } from 'react-native';
 import Bird from './components/Bird';
 import Obstacles from './components/Obstacles';
 
@@ -9,12 +9,14 @@ export default function App() {
   const birdLeft = screenWidth / 2;
   const [birdBottom, setBirdBottom] = useState(screenHeight / 2);
   const [obstaclesLeft, setObstaclesLeft] = useState(screenWidth);
+  const [obstaclesLeftTwo, setObstaclesLeftTwo] = useState(screenWidth + screenWidth / 2 + 30);
   const obstaclesWidth = 60;
   const obstaclesHeight = 300;
   const gap = 200;
   const gravity = 3;
   let gameTimerId;
   let obstaclesLeftTimerId;
+  let obstaclesLeftTimerIdTwo;
 
   //start bird falling
   useEffect(() => {
@@ -42,8 +44,22 @@ export default function App() {
     } else {
       setObstaclesLeft(screenWidth)
     }
-
   }, [obstaclesLeft])
+
+//start second obstacles
+useEffect(() => {
+  if (obstaclesLeftTwo > - obstaclesWidth) {
+    obstaclesLeftTimerIdTwo = setInterval(() => {
+      setObstaclesLeftTwo(obstaclesLeftTwo => obstaclesLeftTwo - 5)
+    }, 30)
+    return () => {
+      clearInterval(obstaclesLeftTimerIdTwo)
+    }
+  } else {
+    setObstaclesLeftTwo(screenWidth)
+  }
+}, [obstaclesLeftTwo])
+
 
 
 
@@ -54,10 +70,18 @@ export default function App() {
       birdLeft={birdLeft}
       />
       <Obstacles
+      color={'green'}
       obstaclesWidth={obstaclesWidth}
       obstaclesHeight={obstaclesHeight}
       gap={gap}
       obstaclesLeft={obstaclesLeft}
+      />
+      <Obstacles
+      color={'yellow'}
+      obstaclesWidth={obstaclesWidth}
+      obstaclesHeight={obstaclesHeight}
+      gap={gap}
+      obstaclesLeft={obstaclesLeftTwo}
       />
     </View>
     
