@@ -1,26 +1,25 @@
 import React from 'react';
-import { View } from 'react-native';
+import { Image } from 'react-native';
 
-const Obstacles = ({color, obstaclesLeft, obstaclesWidth, obstaclesHeight, gap, randomBottom}) => {
+const Obstacles = ({ obstaclesLeft, obstaclesWidth, obstaclesHeight, gap, randomBottom}) => {
 
     return (
         <>
-            <View style={{
+        <Image source={require('../assets/pipe.png')} style={{
                 position: 'absolute',
-                backgroundColor: color,
                 width: obstaclesWidth,
-                height: obstaclesHeight,
+                height: obstaclesHeight - randomBottom,
                 left: obstaclesLeft,
                 bottom: randomBottom + obstaclesHeight + gap,
-            }} />
+            }}></Image>
 
-            <View style={{
+            <Image source={require('../assets/pipe.png')} style={{
                 position: 'absolute',
-                backgroundColor: color,
                 width: obstaclesWidth,
                 height: obstaclesHeight,
                 left: obstaclesLeft,
                 bottom: randomBottom,
+                transform: 'rotate(180deg)',
             }}
             />
         </>

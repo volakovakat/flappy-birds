@@ -1,5 +1,6 @@
+import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { Dimensions, StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
+import { Dimensions, StyleSheet, View, TouchableWithoutFeedback, Text, Image } from 'react-native';
 import Bird from './components/Bird';
 import Obstacles from './components/Obstacles';
 
@@ -12,6 +13,7 @@ export default function App() {
   const [obstaclesLeftTwo, setObstaclesLeftTwo] = useState(screenWidth + screenWidth / 2 + 30);
   const [obstaclesNegHeight, setObstaclesNegHeight] = useState(0)
   const [obstaclesNegHeightTwo, setObstaclesNegHeightTwo] = useState(0)
+  const [score, setScore] = useState(0);
   const obstaclesWidth = 60;
   const obstaclesHeight = 300;
   const gap = 200;
@@ -54,6 +56,7 @@ export default function App() {
     } else {
       setObstaclesLeft(screenWidth)
       setObstaclesNegHeight( - Math.random() * 100)
+      setScore(score => score + 1)
     }
   }, [obstaclesLeft])
 
@@ -69,6 +72,7 @@ useEffect(() => {
   } else {
     setObstaclesLeftTwo(screenWidth)
     setObstaclesNegHeightTwo( - Math.random() * 100)
+    setScore(score => score + 1)
   }
 }, [obstaclesLeftTwo])
 
@@ -76,7 +80,8 @@ useEffect(() => {
 useEffect(() => {
   if ((birdBottom < (obstaclesNegHeight + obstaclesHeight + 30) || birdBottom > (obstaclesNegHeight + obstaclesHeight + gap - 30)) && (obstaclesLeft > screenWidth / 2 - 30 && obstaclesLeft < screenWidth / 2 + 30)
   || 
-  ((birdBottom < (obstaclesNegHeightTwo + obstaclesHeight + 30) || birdBottom > (obstaclesNegHeightTwo + obstaclesHeight + gap - 30)) && (obstaclesLeftTwo > screenWidth / 2 - 30 && obstaclesLeftTwo < screenWidth / 2 + 30)))
+  ((birdBottom < (obstaclesNegHeightTwo + obstaclesHeight + 30) || birdBottom > (obstaclesNegHeightTwo + obstaclesHeight + gap - 30)) && (obstaclesLeftTwo > screenWidth / 2 - 30 && obstaclesLeftTwo < screenWidth / 2 + 30))
+  )
   {
     console.log('game over')
     gameOver()
@@ -93,26 +98,28 @@ const gameOver = () => {
   return (
     <TouchableWithoutFeedback onPress={jump}>
       <View style={styles.container}>
-      <Bird 
-      birdBottom={birdBottom}
-      birdLeft={birdLeft}
-      />
-      <Obstacles
-      color={'green'}
-      obstaclesWidth={obstaclesWidth}
-      obstaclesHeight={obstaclesHeight}
-      randomBottom={obstaclesNegHeight}
-      gap={gap}
-      obstaclesLeft={obstaclesLeft}
-      />
-      <Obstacles
-      color={'yellow'}
-      obstaclesWidth={obstaclesWidth}
-      obstaclesHeight={obstaclesHeight}
-      randomBottom={obstaclesNegHeightTwo}
-      gap={gap}
-      obstaclesLeft={obstaclesLeftTwo}
-      />
+        {isGameOver && <Text>{score} obstacles passed</Text>}
+        <Image source={require('./assets/backgroundimage.png')} style={styles.backgroundImage}/>
+        <Bird 
+        birdBottom={birdBottom}
+        birdLeft={birdLeft}
+        />
+        <Obstacles
+        //color={'green'}
+        obstaclesWidth={obstaclesWidth}
+        obstaclesHeight={obstaclesHeight}
+        randomBottom={obstaclesNegHeight}
+        gap={gap}
+        obstaclesLeft={obstaclesLeft}
+        />
+        <Obstacles
+        //color={'yellow'}
+        obstaclesWidth={obstaclesWidth}
+        obstaclesHeight={obstaclesHeight}
+        randomBottom={obstaclesNegHeightTwo}
+        gap={gap}
+        obstaclesLeft={obstaclesLeftTwo}
+        />
     </View>
     
     </TouchableWithoutFeedback>
@@ -122,8 +129,13 @@ const gameOver = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
   },
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  }
 });
